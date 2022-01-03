@@ -37,3 +37,19 @@ def get_book_infos(id=None, url=None):
         }
 
         return book_dict
+
+def get_choice_awards_categories(year):
+    soup = get_soup(f'https://www.goodreads.com/choiceawards/best-books-{year}')
+    if soup is None:
+        return None
+        
+    genres_divs = soup.find_all('div', class_='category clearFix')
+    get_genre_from_link = lambda link: link.split('/')[-1][5:-5] if 'best' in link else link.split('/')[-1][:-5]
+
+    genres = {}
+    for genre_div in genres_divs:
+        key = genre_div.find('h4').get_text().strip()
+        value = get_genre_from_link(genre_div.a.get('href'))
+        genres[key] = value
+
+    return genres
