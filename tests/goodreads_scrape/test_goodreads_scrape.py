@@ -1,4 +1,8 @@
-from scrapereads.goodreads_scrape.goodreads_scrape import get_book_infos, get_choice_awards_categories
+from scrapereads.goodreads_scrape.goodreads_scrape import (
+    get_book_infos,
+    get_choice_awards_categories,
+    get_choice_awards_nominees
+)
 import pytest
 
 class TestGetBookInfos(object):
@@ -56,3 +60,36 @@ class TestGetChoiceAwardsCategories(object):
     def test_get_choice_awards_categories_with_invalid_year(self):
         actual = get_choice_awards_categories(1999)
         assert actual is None
+
+class TestGetChoiceAwardsNominees(object):
+    def test_invalid_year(self):
+        with pytest.raises(ValueError) as exception_info:
+            get_choice_awards_nominees('fiction-books', 1999)
+            assert exception_info.match(
+                "Category or year invalid. See get_choice_awards_categories(1999).values() "
+                "to get available categories for the year")
+
+    def test_invalid_category(self):
+        with pytest.raises(ValueError) as exception_info:
+            get_choice_awards_nominees('western-books', 2015)
+            assert exception_info.match(
+                "Category or year invalid. See get_choice_awards_categories(2015).values() "
+                "to get available categories for the year")
+
+    def test_favorite_book(self):
+        actual = get_choice_awards_nominees('favorite-book-of', 2011)
+        actual_ids = list(map(lambda book: book['id'], actual))
+        expected_books_amount = 20
+        expected_ids = ['8306857', '7304203', '9969571']
+        assert len(actual) == expected_books_amount
+        for id in expected_ids:
+            assert id in actual_ids, f"Was expected that the book with id equals to {id} was one of returned books, but it wasn't"
+
+    def test_normal_case(self):
+        actual = get_choice_awards_nominees('young-adult-fiction-books', 2021)
+        actual_ids = list(map(lambda book: book['id'], actual))
+        expected_books_amount = 20
+        expected_ids = ['57812106', '54427168', '53138093']
+        assert len(actual) == expected_books_amount
+        for id in expected_ids:
+            assert id in actual_ids, f"Was expected that the book with id equals to {id} was one of returned books, but it wasn't"

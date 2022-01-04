@@ -53,3 +53,25 @@ def get_choice_awards_categories(year):
         genres[key] = value
 
     return genres
+
+def get_choice_awards_nominees(category, year):
+    if not 'favorite' in category:
+        category = 'best-' + category
+    link = f'https://www.goodreads.com/choiceawards/{category}-{year}'
+    soup = get_soup(link)
+    if soup is None:
+        raise ValueError(
+            f"Category or year invalid. See get_choice_awards_categories({year}).values() "
+            "to get available categories for the year")
+
+    books = soup.find_all('a', id=re.compile('bookCover'))
+    books_dicts = []
+    for book in books:
+        book_dict = {
+            'id': get_id_from_url(book.get('href')),
+            'title and author': book.img.get('alt'),
+            'img': book.img.get('src')
+        }
+        books_dicts.append(book_dict)
+
+    return books_dicts
