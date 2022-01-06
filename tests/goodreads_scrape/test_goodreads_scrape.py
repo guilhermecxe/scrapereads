@@ -64,20 +64,20 @@ class TestGetChoiceAwardsCategories(object):
 class TestGetChoiceAwardsNominees(object):
     def test_invalid_year(self):
         with pytest.raises(ValueError) as exception_info:
-            get_choice_awards_nominees('fiction-books', 1999)
+            get_choice_awards_nominees(1999, 'fiction-books')
             assert exception_info.match(
                 "Category or year invalid. See get_choice_awards_categories(1999).values() "
                 "to get available categories for the year")
 
     def test_invalid_category(self):
         with pytest.raises(ValueError) as exception_info:
-            get_choice_awards_nominees('western-books', 2015)
+            get_choice_awards_nominees(2015, 'western-books')
             assert exception_info.match(
                 "Category or year invalid. See get_choice_awards_categories(2015).values() "
                 "to get available categories for the year")
 
     def test_favorite_book(self):
-        actual = get_choice_awards_nominees('favorite-book-of', 2011)
+        actual = get_choice_awards_nominees(2011, 'favorite-book-of')
         actual_ids = list(map(lambda book: book['id'], actual))
         expected_books_amount = 20
         expected_ids = ['8306857', '7304203', '9969571']
@@ -86,7 +86,7 @@ class TestGetChoiceAwardsNominees(object):
             assert id in actual_ids, f"Was expected that the book with id equals to {id} was one of returned books, but it wasn't"
 
     def test_normal_case(self):
-        actual = get_choice_awards_nominees('young-adult-fiction-books', 2021)
+        actual = get_choice_awards_nominees(2021, 'young-adult-fiction-books')
         actual_ids = list(map(lambda book: book['id'], actual))
         expected_books_amount = 20
         expected_ids = ['57812106', '54427168', '53138093']
