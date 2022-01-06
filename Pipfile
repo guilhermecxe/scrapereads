@@ -8,6 +8,7 @@ beautifulsoup4 = "~=4.10.0"
 
 [dev-packages]
 pytest = "~=6.2.5"
+pyment = "~=0.3.3"
 
 [requires]
 python_version = "3.9"
