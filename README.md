@@ -1,9 +1,6 @@
 # Scrapereads
 
-**Trying to make this package the more professional possible, but be known that it is being made by a beginner :)** 
-
-
-
+**Trying to make this package the more professional that I can, but be known that it is being made by a beginner :)** 
 
 
 Scrapereads is a package used to get informations about books via web scraping.
