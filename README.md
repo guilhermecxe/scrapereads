@@ -13,7 +13,7 @@ Scrapereads is a package used to get informations about books via web scraping.
 
 ```py
 >>> from scrapereads import get_choice_awards_categories
->>> get_choice_awards_categories(2015)
+>>> help(get_choice_awards_categories)
 '''
 get_choice_awards_categories(year)
     Get all Goodreads Choice Awards categories from a given year.
