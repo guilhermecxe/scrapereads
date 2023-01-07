@@ -1,60 +1,7 @@
-from scrapereads.goodreads_scrape.utils import get_soup, get_id_from_url, save_soup
+from scrapereads.goodreads_scrape.utils import (
+    get_soup, get_id_from_url, get_genres_from_soup, get_published_year_from_soup, get_synopsis_from_soup
+)
 import re
-
-def get_synopsis_from_soup(soup):
-    """Get the synopsis from a book page.
-
-    Parameters
-    ----------
-    soup : BeautifulSoup
-        BeautifulSoup object created from a book page.
-
-    Returns
-    -------
-    str
-        Book synopsis.
-    None
-        Synopsis not found.
-    """
-    try:
-        return soup.find(id='description').find_all('span')[-1].get_text()
-    except AttributeError:
-        return None
-
-def get_published_year_from_soup(soup):
-    """Get the publication year of a book.
-
-    Parameters
-    ----------
-    soup : BeautifulSoup
-        BeautifulSoup object created from a book page.
-
-    Returns
-    -------
-    int
-        Book publication year.
-    None
-        Publication year not found.
-    """
-    details = soup.find(id='details').find_all('div')[1].get_text()
-    result = re.search('[1-3][0-9]{3}', details)
-    return None if result is None else int(result.group())
-
-def get_genres_from_soup(soup):
-    """Get the genres of a book.
-
-    Parameters
-    ----------
-    soup : BeautifulSoup
-        BeautifulSoup object created from a book page.
-
-    Returns
-    -------
-    list
-        Book genres.
-    """
-    genres_elements = soup.find_all('a', {'href': re.compile('/genres/')}, class_='bookPageGenreLink')
-    return list(map(lambda element: element.get_text(), genres_elements))
 
 def get_book_infos(id=None, url=None):
     """Get informations from a book
