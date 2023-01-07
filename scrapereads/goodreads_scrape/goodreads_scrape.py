@@ -1,4 +1,4 @@
-from scrapereads.goodreads_scrape.utils import get_soup, get_id_from_url
+from scrapereads.goodreads_scrape.utils import get_soup, get_id_from_url, save_soup
 import re
 
 def get_synopsis_from_soup(soup):
